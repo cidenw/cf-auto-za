@@ -92,6 +92,7 @@ def za():
             if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
+            time.sleep(10)
             ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
@@ -103,30 +104,32 @@ def za():
                 logging.info("Clicked Confirm")
                 time.sleep(0.1)
                 # pyautogui.press('enter') 
-            if za_ok is not None:
+            elif za_ok is not None:
                 pyautogui.moveTo(za_ok)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Ok Result")
                 time.sleep(0.1)
                 # pyautogui.press('enter') 
-            if ready2 is not None:
+            elif ready2 is not None:
                 pyautogui.moveTo(ready2)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Ready")
                 time.sleep(0.1)
                 # pyautogui.press('enter') 
-            if join is not None:
+            elif join is not None:
                 pyautogui.moveTo(join)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Join Game")
                 time.sleep(0.1)
-            if start2 is not None:
+            elif start2 is not None:
                 state = "lobby"
                 pyautogui.moveTo(start2)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Start")
                 time.sleep(0.1)
                 # pyautogui.press('enter') 
+            else:
+                anti_idle()
             continue
         
         logging.info("Paused")
@@ -140,8 +143,15 @@ def za():
     logging.info("Terminated")
     quit()
 
+def anti_idle():
+    click()
+    pyautogui.press('enter') 
+    for i in range(3):
+        click()
+    pyautogui.press('enter') 
+    pyautogui.press('enter') 
+
 def rza():
-    state = "lobby"
     is_exit = False
     while True:
         if is_exit:
@@ -151,48 +161,24 @@ def rza():
             if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
-            cancel = pyautogui.locateCenterOnScreen(resource_path('assets/cancel.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            time.sleep(5)
             confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             ready = pyautogui.locateCenterOnScreen(resource_path('assets/ready.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            tab = pyautogui.locateCenterOnScreen(resource_path('assets/tab.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             
-            if cancel is not None:
-                state = "ready"
-
             if confirm is not None:
-                state = "confirm-page"
                 pyautogui.moveTo(confirm)  # Moves the mouse to the coordinates of the image
                 click()
                 time.sleep(0.1)
                 logging.info("Clicked Confirm")
-                # pyautogui.press('enter') 
-
-            if ready is not None:
+            elif ready is not None:
                 state = "lobby"
                 pyautogui.moveTo(ready)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Ready")
                 time.sleep(0.1)
-                # pyautogui.press('enter') 
+            else:
+                anti_idle()
 
-            if tab is not None and state != "in-game":
-                click()
-                pyautogui.press('enter') 
-                for i in range(3):
-                    click()
-                state = "in-game"  # Moves the mouse to the coordinates of the image
-                pyautogui.moveTo(tab)
-                
-                
-
-            if state == "in-game":
-                pyautogui.moveTo(tab)
-                click()
-                for i in range(2):
-                    pyautogui.press('enter') 
-                for i in range(3):
-                    click()
-                start_time = time.time()
         logging.info("Paused")
         while not keyboard.is_pressed('f1'):
             if keyboard.is_pressed('f3'):
