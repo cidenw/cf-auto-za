@@ -47,5 +47,6 @@ exe = EXE(pyz,
           console=False,
           disable_windowed_traceback=False,
           target_arch=None,
-          codesign_identity=None,
+          codesign_identity=None, 
+          uac_admin=True,
           entitlements_file=None , version='file_version_info.txt', icon='app.ico')
