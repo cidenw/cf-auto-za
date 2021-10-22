@@ -5,6 +5,8 @@ import win32api
 import win32con
 import threading
 import logging
+import sys
+import os
 try:
     import tkinter as tk # Python 3.x
     import tkinter.scrolledtext as ScrolledText
@@ -69,6 +71,11 @@ class myGUI(tk.Frame):
         logger = logging.getLogger()        
         logger.addHandler(text_handler)
 
+def resource_path(relative_path):
+     if hasattr(sys, '_MEIPASS'):
+         return os.path.join(sys._MEIPASS, relative_path)
+     return os.path.join(os.path.abspath("."), relative_path)
+
 def click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
@@ -85,9 +92,9 @@ def za():
             if keyboard.is_pressed('e'):
                 is_exit = True
                 break
-            ready2 = pyautogui.locateCenterOnScreen('assets/ready-2.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            start2 = pyautogui.locateCenterOnScreen('assets/start-2.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            join = pyautogui.locateCenterOnScreen('assets/join-game.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             if ready2 is not None:
                 state = "lobby"
                 pyautogui.moveTo(ready2)  # Moves the mouse to the coordinates of the image
@@ -131,10 +138,10 @@ def rza():
             if keyboard.is_pressed('e'):
                 is_exit = True
                 break
-            cancel = pyautogui.locateCenterOnScreen('assets/cancel.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            confirm = pyautogui.locateCenterOnScreen('assets/confirm.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            ready = pyautogui.locateCenterOnScreen('assets/ready.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            tab = pyautogui.locateCenterOnScreen('assets/tab.png', region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            cancel = pyautogui.locateCenterOnScreen(resource_path('assets/cancel.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            ready = pyautogui.locateCenterOnScreen(resource_path('assets/ready.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            tab = pyautogui.locateCenterOnScreen(resource_path('assets/tab.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             
             if cancel is not None:
                 state = "ready"
@@ -190,11 +197,7 @@ def get_mode():
         if keyboard.is_pressed('2'):
             return 2
 
-def quit():
-    global root
-    root.quit()
-def main():
-    myGUI(root)
+def worker():
     mode = get_mode()
     
     logging.info("Press E to exit")
@@ -202,12 +205,21 @@ def main():
     logging.info("Press Q to Pause")
 
     if mode == 1:
-        t1 = threading.Thread(target=rza, args=[])
+        rza()
     else:
-        t1 = threading.Thread(target=za, args=[])
+        za()
+
+def quit():
+    global root
+    root.quit()
+def main():
+    myGUI(root)
+
+    t1 = threading.Thread(target=worker, args=[])
     t1.start()
 
     root.mainloop()
+
     t1.join()
 root = tk.Tk()
 main()
