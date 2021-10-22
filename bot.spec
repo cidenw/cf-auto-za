@@ -12,6 +12,7 @@ added_files = [
     ( 'assets/ready.png', 'assets'),
     ( 'assets/tab.png', 'assets'),
     ( 'assets/za-confirm.png', 'assets'),
+    ( 'assets/za-ok.png', 'assets'),
 ]
 
 a = Analysis(['bot.py'],

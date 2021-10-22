@@ -88,18 +88,25 @@ def za():
         if is_exit:
             break
         logging.info("Started")
-        while not keyboard.is_pressed('q'):
-            if keyboard.is_pressed('e'):
+        while not keyboard.is_pressed('f2'):
+            if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
             ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             if za_confirm is not None:
                 pyautogui.moveTo(za_confirm)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Confirm")
+                time.sleep(0.1)
+                # pyautogui.press('enter') 
+            if za_ok is not None:
+                pyautogui.moveTo(za_ok)  # Moves the mouse to the coordinates of the image
+                click()
+                logging.info("Clicked Ok Result")
                 time.sleep(0.1)
                 # pyautogui.press('enter') 
             if ready2 is not None:
@@ -123,8 +130,8 @@ def za():
             continue
         
         logging.info("Paused")
-        while not keyboard.is_pressed('s'):
-            if keyboard.is_pressed('e'):
+        while not keyboard.is_pressed('f1'):
+            if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
 
@@ -140,8 +147,8 @@ def rza():
         if is_exit:
             break
         logging.info("Started")
-        while not keyboard.is_pressed('q'):
-            if keyboard.is_pressed('e'):
+        while not keyboard.is_pressed('f2'):
+            if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
             cancel = pyautogui.locateCenterOnScreen(resource_path('assets/cancel.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
@@ -187,8 +194,8 @@ def rza():
                     click()
                 start_time = time.time()
         logging.info("Paused")
-        while not keyboard.is_pressed('s'):
-            if keyboard.is_pressed('e'):
+        while not keyboard.is_pressed('f1'):
+            if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
     logging.info("Terminated")
@@ -206,9 +213,9 @@ def get_mode():
 def worker():
     mode = get_mode()
     
-    logging.info("Press E to exit")
-    logging.info("Press S to Start")
-    logging.info("Press Q to Pause")
+    logging.info("Press F1 to Start")
+    logging.info("Press F2 to Pause")
+    logging.info("Press F3 to exit")
 
     if mode == 1:
         rza()
