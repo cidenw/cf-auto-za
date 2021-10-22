@@ -4,13 +4,13 @@
 block_cipher = None
 
 added_files = [
-    ( 'assets/ready-2.png', '.' ),
-    ( 'assets/start-2.png', '.'),
-    ( 'assets/join-game.png', '.'),
-    ( 'assets/cancel.png', '.'),
-    ( 'assets/confirm.png', '.'),
-    ( 'assets/ready.png', '.'),
-    ( 'assets/tab.png', '.'),
+    ( 'assets/ready-2.png', 'assets' ),
+    ( 'assets/start-2.png', 'assets'),
+    ( 'assets/join-game.png', 'assets'),
+    ( 'assets/cancel.png', 'assets'),
+    ( 'assets/confirm.png', 'assets'),
+    ( 'assets/ready.png', 'assets'),
+    ( 'assets/tab.png', 'assets'),
 ]
 
 a = Analysis(['bot.py'],
