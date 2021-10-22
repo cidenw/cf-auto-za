@@ -95,8 +95,14 @@ def za():
             ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
             join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+            if za_confirm is not None:
+                pyautogui.moveTo(za_confirm)  # Moves the mouse to the coordinates of the image
+                click()
+                logging.info("Clicked Confirm")
+                time.sleep(0.1)
+                # pyautogui.press('enter') 
             if ready2 is not None:
-                state = "lobby"
                 pyautogui.moveTo(ready2)  # Moves the mouse to the coordinates of the image
                 click()
                 logging.info("Clicked Ready")
