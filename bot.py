@@ -14,6 +14,8 @@ except ImportError:
     import Tkinter as tk # Python 2.x
     import ScrolledText
 
+anti_idle_delay = 5
+
 class TextHandler(logging.Handler):
     # This class allows you to log to a Tkinter Text or ScrolledText widget
     # Adapted from Moshe Kaplan: https://gist.github.com/moshekaplan/c425f861de7bbf28ef06
@@ -81,6 +83,45 @@ def click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.1)
 
+def za_clicker():
+    ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    if za_confirm is not None:
+        pyautogui.moveTo(za_confirm)
+        click()
+        logging.info("Clicked Confirm")
+        time.sleep(0.1)
+
+    elif za_ok is not None:
+        pyautogui.moveTo(za_ok)
+        click()
+        logging.info("Clicked Ok Result")
+        time.sleep(0.1)
+
+    elif ready2 is not None:
+        pyautogui.moveTo(ready2)
+        click()
+        logging.info("Clicked Ready")
+        time.sleep(0.1)
+
+    elif join is not None:
+        pyautogui.moveTo(join)
+        click()
+        logging.info("Clicked Join Game")
+        time.sleep(0.1)
+    elif start2 is not None:
+        state = "lobby"
+        pyautogui.moveTo(start2)
+        click()
+        logging.info("Clicked Start")
+        time.sleep(0.1)
+
+    else:
+        anti_idle()
+
 def za():
     state = "lobby"
     is_exit = False
@@ -88,57 +129,19 @@ def za():
         if is_exit:
             break
         logging.info("Started")
-        while not keyboard.is_pressed('f2'):
-            if keyboard.is_pressed('f3'):
+        while state != 'f2':
+            if state == 'f3':
                 is_exit = True
                 break
-            time.sleep(10)
-            ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            if za_confirm is not None:
-                pyautogui.moveTo(za_confirm)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Confirm")
-                time.sleep(0.1)
-                # pyautogui.press('enter') 
-            elif za_ok is not None:
-                pyautogui.moveTo(za_ok)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Ok Result")
-                time.sleep(0.1)
-                # pyautogui.press('enter') 
-            elif ready2 is not None:
-                pyautogui.moveTo(ready2)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Ready")
-                time.sleep(0.1)
-                # pyautogui.press('enter') 
-            elif join is not None:
-                pyautogui.moveTo(join)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Join Game")
-                time.sleep(0.1)
-            elif start2 is not None:
-                state = "lobby"
-                pyautogui.moveTo(start2)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Start")
-                time.sleep(0.1)
-                # pyautogui.press('enter') 
-            else:
-                anti_idle()
+            # time.sleep(10)
+            za_clicker()
             continue
         
         logging.info("Paused")
-        while not keyboard.is_pressed('f1'):
-            if keyboard.is_pressed('f3'):
+        while state != 'f1':
+            if state == 'f3':
                 is_exit = True
                 break
-
-        
 
     logging.info("Terminated")
     quit()
@@ -151,7 +154,25 @@ def anti_idle():
     pyautogui.press('enter') 
     pyautogui.press('enter') 
 
+def ready_rza():
+    confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    ready = pyautogui.locateCenterOnScreen(resource_path('assets/ready.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    
+    if confirm is not None:
+        pyautogui.moveTo(confirm)
+        click()
+        time.sleep(0.1)
+        logging.info("Clicked Confirm")
+    elif ready is not None:
+        state = "lobby"
+        pyautogui.moveTo(ready)
+        click()
+        logging.info("Clicked Ready")
+        time.sleep(0.1)
+
 def rza():
+    start = time.time()
+    end = time.time()
     is_exit = False
     while True:
         if is_exit:
@@ -161,23 +182,14 @@ def rza():
             if keyboard.is_pressed('f3'):
                 is_exit = True
                 break
-            time.sleep(5)
-            confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            ready = pyautogui.locateCenterOnScreen(resource_path('assets/ready.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-            
-            if confirm is not None:
-                pyautogui.moveTo(confirm)  # Moves the mouse to the coordinates of the image
-                click()
-                time.sleep(0.1)
-                logging.info("Clicked Confirm")
-            elif ready is not None:
-                state = "lobby"
-                pyautogui.moveTo(ready)  # Moves the mouse to the coordinates of the image
-                click()
-                logging.info("Clicked Ready")
-                time.sleep(0.1)
-            else:
+
+            end = time.time()
+            elapsed = end-start
+            if (elapsed > anti_idle_delay):
+                ready_rza()
                 anti_idle()
+                start = time.time()
+            continue
 
         logging.info("Paused")
         while not keyboard.is_pressed('f1'):
@@ -187,14 +199,86 @@ def rza():
     logging.info("Terminated")
     quit()
 
+def tdm():
+    global anti_idle_delay
+    is_exit = False
+    start = time.time()
+    end = time.time()
+    while True:
+        if is_exit:
+            break
+        logging.info("Started")
+        while not keyboard.is_pressed('f2'):
+            if keyboard.is_pressed('f3'):
+                is_exit = True
+                break
+            # time.sleep(10)
+
+            end = time.time()
+            elapsed = end-start
+            if (elapsed > anti_idle_delay):
+                click_ready()
+                anti_idle()
+                start = time.time()
+            continue
+        
+        logging.info("Paused")
+        while not keyboard.is_pressed('f1'):
+            if keyboard.is_pressed('f3'):
+                is_exit = True
+                break
+
+    logging.info("Terminated")
+    quit()
+    return
+
+def click_ready():
+    ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    if za_confirm is not None:
+        pyautogui.moveTo(za_confirm)
+        click()
+        logging.info("Clicked Confirm")
+        time.sleep(0.1)
+
+    elif za_ok is not None:
+        pyautogui.moveTo(za_ok)
+        click()
+        logging.info("Clicked Ok Result")
+        time.sleep(0.1)
+
+    elif ready2 is not None:
+        pyautogui.moveTo(ready2)
+        click()
+        logging.info("Clicked Ready")
+        time.sleep(0.1)
+
+    elif join is not None:
+        pyautogui.moveTo(join)
+        click()
+        logging.info("Clicked Join Game")
+        time.sleep(0.1)
+    elif start2 is not None:
+        state = "lobby"
+        pyautogui.moveTo(start2)
+        click()
+        logging.info("Clicked Start")
+        time.sleep(0.1)
+
 def get_mode():
     logging.info("Press 1 for Ranked ZA")
     logging.info("Press 2 for ZA")
+    logging.info("Press 3 for normal room")
     while True:
         if keyboard.is_pressed('1'):
             return 1
         if keyboard.is_pressed('2'):
             return 2
+        if keyboard.is_pressed('3'):
+            return 3
 
 def worker():
     mode = get_mode()
@@ -202,27 +286,31 @@ def worker():
     logging.info("Press F1 to Start")
     logging.info("Press F2 to Pause")
     logging.info("Press F3 to exit")
-
-    if mode == 1:
-        rza()
-    else:
-        za()
+    try:
+        if mode == 1:
+            rza()
+        elif mode == 2:
+            za()
+        elif mode == 3:
+            tdm()
+        else:
+            quit()
+    except KeyboardInterrupt:
+        quit()
+    
 
 def quit():
     global root
     root.quit()
+
 def main():
     myGUI(root)
 
     t1 = threading.Thread(target=worker, args=[])
     t1.start()
-
     root.mainloop()
 
     t1.join()
 root = tk.Tk()
-main()
 
-    
-    
-        
+main()
