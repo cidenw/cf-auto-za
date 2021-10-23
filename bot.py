@@ -7,6 +7,8 @@ import threading
 import logging
 import sys
 import os
+import datetime
+
 try:
     import tkinter as tk # Python 3.x
     import tkinter.scrolledtext as ScrolledText
@@ -118,6 +120,19 @@ def ready_za():
         click()
         logging.info("Clicked Start")
         time.sleep(0.1)
+
+def check_expiry():
+    CurrentDate = datetime.datetime.now()
+    print(CurrentDate)
+
+    ExpectedDate = "24/10/2021 8:00"
+    ExpectedDate = datetime.datetime.strptime(ExpectedDate, "%d/%m/%Y %H:%M")
+    logging.info(f"Valid until {ExpectedDate}")
+
+    if CurrentDate > ExpectedDate:
+        logging.info("Expired na chat mo Yorushika Komorebi")
+        time.sleep(5)
+        quit()
 
 def ready_rza():
     confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
@@ -249,10 +264,11 @@ def get_mode():
             return 1
         if keyboard.is_pressed('2'):
             return 2
-        if keyboard.is_pressed('3'):
-            return 3
+        # if keyboard.is_pressed('3'):
+        #     return 3
 
 def worker():
+    check_expiry()
     mode = get_mode()
     time.sleep(1)
     logging.info("Press F1 to Start")
