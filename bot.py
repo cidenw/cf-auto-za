@@ -231,7 +231,7 @@ def anti_idle():
 def get_mode():
     logging.info("Press 1 for Ranked ZA")
     logging.info("Press 2 for ZA")
-    logging.info("Press 3 for normal room")
+    # logging.info("Press 3 for normal room")
     while True:
         if keyboard.is_pressed('1'):
             return 1
