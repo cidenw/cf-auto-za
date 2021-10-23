@@ -123,6 +123,8 @@ def ready_rza():
     confirm = pyautogui.locateCenterOnScreen(resource_path('assets/confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
     ready = pyautogui.locateCenterOnScreen(resource_path('assets/ready.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.90)
     accept = pyautogui.locateCenterOnScreen(resource_path('assets/accept.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
     if confirm is not None:
         pyautogui.moveTo(confirm)
         click()
@@ -137,6 +139,16 @@ def ready_rza():
         pyautogui.moveTo(accept)
         click()
         logging.info("Clicked Accept")
+        time.sleep(0.1)
+    elif za_ok is not None:
+        pyautogui.moveTo(za_ok)
+        click()
+        logging.info("Clicked Ok")
+        time.sleep(0.1)
+    elif za_confirm is not None:
+        pyautogui.moveTo(za_confirm)
+        click()
+        logging.info("Clicked Confirm")
         time.sleep(0.1)
 
 def ready_tdm():
