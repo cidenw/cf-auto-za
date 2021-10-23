@@ -247,7 +247,7 @@ def worker():
     logging.info("Press F2 to Pause")
     logging.info("Press F3 to exit")
     try:
-        if mode > 3:
+        if mode > 2:
             quit()
         controller(mode)
     except KeyboardInterrupt:
