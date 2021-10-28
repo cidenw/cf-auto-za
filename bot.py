@@ -16,7 +16,7 @@ except ImportError:
     import Tkinter as tk # Python 2.x
     import ScrolledText
 
-anti_idle_delay = 1
+anti_idle_delay = 10
 enable_anti_idle = False
 class TextHandler(logging.Handler):
     # This class allows you to log to a Tkinter Text or ScrolledText widget
@@ -125,7 +125,7 @@ def check_expiry():
     CurrentDate = datetime.datetime.now()
     print(CurrentDate)
 
-    ExpectedDate = "24/10/2021 8:00"
+    ExpectedDate = "28/10/2021 8:00"
     ExpectedDate = datetime.datetime.strptime(ExpectedDate, "%d/%m/%Y %H:%M")
     logging.info(f"Valid until {ExpectedDate}")
 
@@ -167,11 +167,11 @@ def ready_rza():
         time.sleep(0.1)
 
 def ready_tdm():
-    ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-    start2 = pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-    join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-    za_confirm = pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
-    za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    ready2 = pyautogui.locateCenterOnScreen(resource_path('assets/ready-2.png'), region=(690, 410, 777, 457), grayscale=True, confidence=0.70)
+    start2 = None #pyautogui.locateCenterOnScreen(resource_path('assets/start-2.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    join = pyautogui.locateCenterOnScreen(resource_path('assets/join-game.png'), region=(690, 410, 777, 457), grayscale=True, confidence=0.70)
+    za_confirm = None #pyautogui.locateCenterOnScreen(resource_path('assets/za-confirm.png'), region=(0, 0, 1920, 1080), grayscale=True, confidence=0.70)
+    za_ok = pyautogui.locateCenterOnScreen(resource_path('assets/za-ok.png'), region=(675, 525, 780, 570), grayscale=True, confidence=0.70)
     if za_confirm is not None:
         pyautogui.moveTo(za_confirm)
         click()
@@ -196,7 +196,6 @@ def ready_tdm():
         logging.info("Clicked Join Game")
         time.sleep(0.1)
     elif start2 is not None:
-        state = "lobby"
         pyautogui.moveTo(start2)
         click()
         logging.info("Clicked Start")
@@ -208,42 +207,45 @@ def controller(mode):
     end = time.time()
     is_exit = False
     while True:
-        if is_exit:
-            break
-        logging.info("Auto Ready: Started")
-        logging.info("Press F4 to enable anti idle, F5 to disable")
-        while not keyboard.is_pressed('f2'):
-            if keyboard.is_pressed('f3'):
-                is_exit = True
+        try:
+            if is_exit:
                 break
-            if keyboard.is_pressed('f5'):
-                logging.info("Anti Idle: Disable")
-                enable_anti_idle = False
-                time.sleep(1)
-            if keyboard.is_pressed('f4'):
-                logging.info("Anti Idle: Enable")
-                enable_anti_idle = True
-                time.sleep(1)
-            end = time.time()
-            elapsed = end-start
-            if (elapsed > anti_idle_delay):
-                if mode == '1':
-                    ready_rza()
-                elif mode == '2':
-                    ready_za()
-                elif mode == '3':
-                    ready_tdm()
+            logging.info("Auto Ready: Started")
+            logging.info("Press F4 to enable anti idle, F5 to disable")
+            while not keyboard.is_pressed('f2'):
+                if keyboard.is_pressed('f3'):
+                    is_exit = True
+                    break
+                if keyboard.is_pressed('f5'):
+                    logging.info("Anti Idle: Disable")
+                    enable_anti_idle = False
+                    time.sleep(1)
+                if keyboard.is_pressed('f4'):
+                    logging.info("Anti Idle: Enable")
+                    enable_anti_idle = True
+                    time.sleep(1)
+                end = time.time()
+                elapsed = end-start
+                if (elapsed > anti_idle_delay):
+                    if mode == 1:
+                        ready_rza()
+                    elif mode == 2:
+                        ready_za()
+                    elif mode == 3:
+                        ready_tdm()
 
-                if enable_anti_idle:
-                    anti_idle()
-                start = time.time()
+                    if enable_anti_idle:
+                        anti_idle()
+                    start = time.time()
+                continue
+
+            logging.info("Auto Ready: Paused")
+            while not keyboard.is_pressed('f1'):
+                if keyboard.is_pressed('f3'):
+                    is_exit = True
+                    break
+        except:
             continue
-
-        logging.info("Auto Ready: Paused")
-        while not keyboard.is_pressed('f1'):
-            if keyboard.is_pressed('f3'):
-                is_exit = True
-                break
     logging.info("Terminated")
     quit()
 
@@ -256,16 +258,18 @@ def anti_idle():
     pyautogui.press('enter') 
 
 def get_mode():
+    return 3
     logging.info("Press 1 for Ranked ZA")
     logging.info("Press 2 for ZA")
+    logging.info("Press 3 for TDM")
     # logging.info("Press 3 for normal room")
     while True:
         if keyboard.is_pressed('1'):
             return 1
         if keyboard.is_pressed('2'):
             return 2
-        # if keyboard.is_pressed('3'):
-        #     return 3
+        if keyboard.is_pressed('3'):
+            return 3
 
 def worker():
     check_expiry()
@@ -275,7 +279,7 @@ def worker():
     logging.info("Press F2 to Pause")
     logging.info("Press F3 to exit")
     try:
-        if mode > 2:
+        if mode > 3:
             quit()
         controller(mode)
     except KeyboardInterrupt:
