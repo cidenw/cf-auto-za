@@ -14,9 +14,14 @@ added_files = [
     ( 'assets/za-confirm.png', 'assets'),
     ( 'assets/za-ok.png', 'assets'),
     ( 'assets/accept.png', 'assets'),
+    ( 'assets/3/arcadia/ready.png', 'assets/3/arcadia'),
+    ( 'assets/3/arcadia/join.png', 'assets/3/arcadia'),
+    ( 'assets/3/arcadia/confirm.png', 'assets/3/arcadia'),
+    ( 'assets/3/arcadia/ok.png', 'assets/3/arcadia'),
+    ( 'assets/3/arcadia/ok2.png', 'assets/3/arcadia'),
 ]
 
-a = Analysis(['bot.py'],
+a = Analysis(['main.py'],
              pathex=['D:\\Projects\\cf-anti-idle'],
              binaries=[],
              datas=added_files,
