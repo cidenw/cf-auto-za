@@ -61,7 +61,7 @@ class Menu(tk.Frame):
         CurrentDate = datetime.datetime.now()
         print(CurrentDate)
 
-        ExpectedDate = "1/5/2022 1:00"
+        ExpectedDate = "1/5/2023 1:00"
         ExpectedDate = datetime.datetime.strptime(ExpectedDate, "%d/%m/%Y %H:%M")
         logging.info(f"Valid until {ExpectedDate}")
 
